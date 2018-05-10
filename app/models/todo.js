@@ -1,7 +1,7 @@
-var Sequelize = require('mysql2');
+// var Sequelize = require('sequelize');
 
-module.exports = new Sequelize.model('Todo', {
-    text:  {required: true, type: String},
-    status: Boolean,
-    email : String
-});
+// module.exports = new Sequelize.model('Todo', {
+//     text:  {required: true, type: String},
+//     status: Boolean,
+//     email : String
+// });

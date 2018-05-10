@@ -16,12 +16,41 @@ var session = require('express-session');
 var database = require('./config/database.js');
 
 
-app.use(express.static(__dirname+'/public'))
+
+app.use(express.static(__dirname + '/public')); // set the static files location /public/img will be /img for users
+app.use(morgan('dev')); // log every request to the console
+app.use(bodyParser.urlencoded({
+  'extended': 'true'
+})); // parse application/x-www-form-urlencoded
+app.use(bodyParser.json()); // parse application/json
+app.use(bodyParser.json({
+  type: 'application/vnd.api+json'
+})); // parse application/vnd.api+json as json
+app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-Method-Override header in the request
+app.use(cookieParser());
+// required for passport
+app.use(session({
+    secret: 'starwarsspoiler',
+    resave: true,
+    saveUninitialized: true
+})); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
+
+// routes ======================================================================
+
+//route crashes server//
+// require('./app/controllers/todoController.js')(app);
+
+
+require('./app/controllers/authController.js')(app, passport);
+
 
 
 app.engine('.hbs', hb({ defaultLayout: 'main', extname: '.hbs' }))
-  .set('view engine', '.hbs')
-  .get('/',  (req, res) => {
+  app.set('view engine', '.hbs')
+  app.get('/',  (req, res) => {
     res.render('home')
   })
-  .listen(PORT, () => console.log(`Listening on ${PORT}`))
+  app.listen(PORT, () => console.log(`Listening on ${PORT}`))
