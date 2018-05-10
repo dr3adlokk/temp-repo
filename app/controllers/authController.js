@@ -6,12 +6,12 @@ module.exports = function (app, passport) {
 
     // HOME PAGE
     app.get('/', function (req, res) {
-        res.render('home.ejs');
+        res.render('home.hbs');
     });
 
     // LOCAL-LOGIN
     app.get('/login', function (req, res) {
-        res.render('login.ejs', {
+        res.render('login.hbs', {
             message: req.flash('loginMessage')
         });
     });
@@ -26,7 +26,7 @@ module.exports = function (app, passport) {
     app.get('/signup', function (req, res) {
 
         // render the page and pass in any flash data if it exists
-        res.render('signup.ejs', {
+        res.render('signup.hbs', {
             message: req.flash('signupMessage')
         });
     });
@@ -44,7 +44,7 @@ module.exports = function (app, passport) {
 
     app.get('/auth/facebook/callback',
         passport.authenticate('facebook', {
-            successRedirect: '/todos',
+            successRedirect: '/modal.hbs',
             failureRedirect: '/'
         }));
 
@@ -55,7 +55,7 @@ module.exports = function (app, passport) {
 
     app.get('/auth/google/callback',
         passport.authenticate('google', {
-            successRedirect: '/todos',
+            successRedirect: '/modal.hbs',
             failureRedirect: '/'
         }));
 
@@ -63,7 +63,7 @@ module.exports = function (app, passport) {
     // and a helper to check which strategy was used to authenticate
     app.get('/profile', isLoggedIn, function (req, res) {
         auth_user = authenticated_using(req)
-        res.render('profile.ejs', {
+        res.render('profile.hbs', {
             user: auth_user
         });
     });
